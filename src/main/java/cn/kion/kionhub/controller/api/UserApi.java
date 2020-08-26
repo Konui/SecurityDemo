@@ -36,6 +36,7 @@ public class UserApi {
      */
     @PostMapping("/register")
     public JsonResult register(User user){
+        //参数不为空
         if(ObjectUtils.isEmpty(user)){
             throw new ResultException(ResultCode.PARAM_NOT_VALID);
         }

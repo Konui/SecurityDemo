@@ -1,6 +1,7 @@
 package cn.kion.kionhub.exception;
 
 import cn.kion.kionhub.response.JsonResult;
+import cn.kion.kionhub.response.ResultCode;
 import cn.kion.kionhub.response.ResultTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,5 +21,12 @@ public class AllExceptionHandler {
     @ResponseBody
     public JsonResult handler(ResultException e){
         return ResultTool.fail(e.getCode());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public JsonResult GobalHandler(Exception e){
+        e.printStackTrace();
+        return ResultTool.fail(ResultCode.COMMON_UNKONW_ERROR);
     }
 }

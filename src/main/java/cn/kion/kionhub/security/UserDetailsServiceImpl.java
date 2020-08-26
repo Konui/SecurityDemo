@@ -5,10 +5,12 @@ import cn.kion.kionhub.entity.User;
 import cn.kion.kionhub.exception.ResultException;
 import cn.kion.kionhub.response.ResultCode;
 import cn.kion.kionhub.response.ResultTool;
+import cn.kion.kionhub.service.PermissionService;
 import cn.kion.kionhub.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +29,8 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserService userService;
+    @Autowired
+    PermissionService permissionService;
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         if(StringUtils.isEmpty(s)){
@@ -37,8 +41,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new ResultException(ResultCode.USER_ACCOUNT_NOT_EXIST);
         }
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        List<Permission> permissionList;
-        return null;
+        List<Permission> permissionList=permissionService.getUserPermissionByName(s);
+        permissionList.forEach(permission -> {
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getPermissionCode());
+            grantedAuthorities.add(grantedAuthority);
+        });
+        return new org.springframework.security.core.userdetails.User(
+                user.getName(),
+                user.getPwd(),
+                user.getStatus()==1?true:false,
+                false,
+                false,
+                false,
+                grantedAuthorities
+        );
     }
 
 

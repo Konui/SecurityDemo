@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.kion.kionhub.mapper.UserMapper">
+    <resultMap id="User" type="cn.kion.kionhub.entity.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="userName" column="username"/>
+        <result property="pwd" column="password"/>
+        <result property="mail" column="mail"/>
+        <result property="headImg" column="head_img"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="selectUserById" resultMap="User">
+        SELECT * FROM sys_user WHERE id = #{id};
+    </select>
+    <select id="selectUserByUserName" resultMap="User">
+        SELECT * FROM sys_user WHERE username = #{userName};
+    </select>
+    <select id="selectUserByName" resultMap="User">
+        SELECT * FROM sys_user WHERE name = #{name};
+    </select>
+    <select id="searchUser" resultMap="User">
+        SELECT * FROM sys_user WHERE  username LIKE concat('%',#{keyword},'%');
+    </select>
+
+    <select id="getAllUser" resultMap="User">
+        SELECT * FROM sys_user;
+    </select>
+    <select id="isExistByName">
+        SELECT name FROM sys_user WHERE name = #{name};
+    </select>
+    <select id="isExistByUserName">
+        SELECT username FROM sys_user WHERE username = #{userName};
+    </select>
+    <select id="isExistByMail">
+        SELECT mail FROM sys_user WHERE mail = #{mail};
+    </select>
+
+    <insert id="register">
+        INSERT INTO sys_user (name,username,password,head_img,create_time)values(#{name},#{username},#{password},'default',now());
+    </insert>
+
+    <update id="resetPwd">
+        UPDATE sys_user SET password = #{password} WHERE mail = #{mail};
+    </update>
+    <update id="setUserName">
+        UPDATE sys_user SET username = #{username} WHERE id = #{id};
+    </update>
+    <update id="setHeadImg">
+        UPDATE sys_user SET head_img = #{headImg} WHERE id = #{id};
+    </update>
+    <update id="setMail">
+        UPDATE sys_user SET mail = #{mail} WHERE id = #{id};
+    </update>
+</mapper>

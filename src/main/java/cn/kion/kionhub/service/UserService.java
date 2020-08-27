@@ -18,7 +18,7 @@ public interface UserService {
      * @Date    2020-08-23 18:46
      */
     boolean register(User user);
-    boolean login();
+    boolean login(User user);
 
     /**
      * 设置邮箱

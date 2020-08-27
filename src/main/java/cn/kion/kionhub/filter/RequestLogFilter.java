@@ -16,8 +16,6 @@ import java.io.IOException;
  * @Date 2020-08-22 19:26
  */
 @Slf4j
-@WebFilter("/*")
-@Order(0)
 public class RequestLogFilter implements Filter {
     /**
      * 记录所有请求的相关信息

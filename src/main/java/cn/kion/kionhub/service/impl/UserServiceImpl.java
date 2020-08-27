@@ -43,7 +43,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login() {
+    public boolean login(User user) {
+        User u = userMapper.selectUserByName(user.getName());
+        if(u!=null){
+            return bCryptPasswordEncoder.encode(user.getPwd())==u.getPwd();
+        }
         return false;
     }
 

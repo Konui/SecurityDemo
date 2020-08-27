@@ -46,6 +46,22 @@ public class UserApi {
         }
         return ResultTool.success();
     }
+    @GetMapping("/login")
+    public JsonResult login(User user){
+        if(ObjectUtils.isEmpty(user)){
+            throw new ResultException(ResultCode.PARAM_NOT_VALID);
+        }
+        boolean flag=userService.login(user);
+        if(!flag){
+            return ResultTool.fail();
+        }
+        return ResultTool.success();
+    }
+    @GetMapping("/logout")
+    public JsonResult logout(){
+        return ResultTool.success();
+    }
+
 
 
 }

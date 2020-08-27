@@ -22,10 +22,18 @@ public class PermissionImpl implements PermissionService {
 
 
     @Override
-    public List<Permission> getUserPermissionByName(String name) {
+    public List<Permission> selectListByUser(String name) {
         if(StringUtils.isEmpty(name)){
             throw new ResultException(ResultCode.PARAM_NOT_BLANK);
         }
-        return permissionMapper.selectListByName(name);
+        return permissionMapper.selectListByUser(name);
+    }
+
+    @Override
+    public List<Permission> selectListByPath(String url) {
+        if(StringUtils.isEmpty(url)){
+            throw new ResultException(ResultCode.PARAM_NOT_BLANK);
+        }
+        return permissionMapper.selectListByPath(url);
     }
 }

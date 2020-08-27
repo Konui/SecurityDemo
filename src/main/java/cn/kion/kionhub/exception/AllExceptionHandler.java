@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @ControllerAdvice
 public class AllExceptionHandler {
+    static final String noMapping="No handler found for";
+
     @ExceptionHandler(ResultException.class)
     @ResponseBody
     public JsonResult handler(ResultException e){
@@ -26,7 +28,13 @@ public class AllExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public JsonResult GobalHandler(Exception e){
+        JsonResult result;
         e.printStackTrace();
-        return ResultTool.fail(ResultCode.COMMON_UNKONW_ERROR);
+        if(e.getMessage().contains(noMapping)){
+            result = ResultTool.fail(ResultCode.NO_MAPPING_URL);
+        }else {
+            result = ResultTool.fail(ResultCode.COMMON_UNKONW_ERROR);
+        }
+        return result;
     }
 }

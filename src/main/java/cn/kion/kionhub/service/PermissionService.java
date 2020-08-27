@@ -10,5 +10,6 @@ import java.util.List;
  * @Date 2020-08-26 19:25
  */
 public interface PermissionService {
-    List<Permission> getUserPermissionByName(String name);
+    List<Permission> selectListByUser(String name);
+    List<Permission> selectListByPath(String url);
 }

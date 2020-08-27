@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.web.servlet.ServletComponentScan;
 @SpringBootApplication
 //@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
-@ServletComponentScan("cn.kion.kionhub.filter")
+@ServletComponentScan
 public class KionhubApplication {
 
     public static void main(String[] args) {

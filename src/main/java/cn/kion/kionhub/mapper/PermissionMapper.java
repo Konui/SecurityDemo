@@ -12,5 +12,6 @@ import java.util.List;
  */
 @Mapper
 public interface PermissionMapper {
-    List<Permission> selectListByName(@Param("name")String name);
+    List<Permission> selectListByUser(@Param("name")String name);
+    List<Permission> selectListByPath(@Param("url")String url);
 }

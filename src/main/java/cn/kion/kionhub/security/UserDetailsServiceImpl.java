@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new ResultException(ResultCode.USER_ACCOUNT_NOT_EXIST);
         }
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        List<Permission> permissionList=permissionService.getUserPermissionByName(s);
+        List<Permission> permissionList=permissionService.selectListByUser(s);
         permissionList.forEach(permission -> {
             GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getPermissionCode());
             grantedAuthorities.add(grantedAuthority);

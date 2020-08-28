@@ -50,9 +50,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getName(),
                 user.getPwd(),
                 user.getStatus()==1?true:false,
-                false,
-                false,
-                false,
+                true,
+                true,
+                true,
                 grantedAuthorities
         );
     }

@@ -48,17 +48,6 @@ public interface UserMapper {
      * @Date    2020-08-23 16:38
      */
     List<User> searchUser(@Param("keyword") String keyword);
-
-//    /**
-//     * 登录检验密码
-//     *
-//     * @Param   name    用户登录名
-//     * @Param   pwd     用户密码
-//     * @Return  boolean
-//     *
-//     * @Date    2020-08-23 16:33
-//     */
-//    boolean checkPwd(String name, String pwd);
     /**
      * 根据邮箱重置密码
      *
@@ -145,5 +134,25 @@ public interface UserMapper {
      * @Date    2020-08-23 16:37
      */
     List<User> getAllUser();
+    /**
+     * 注册用户角色，默认普通用户角色
+     *
+     * @Param   uid
+     * @Param   rid
+     * @Return  boolean
+     *
+     * @Date    2020-08-28 11:45
+     */
+    boolean registerUserRole(@Param("name")String name);
+    /**
+     * 设置用户的角色
+     *
+     * @Param   uid
+     * @Param   rid
+     * @Return  boolean
+     *
+     * @Date    2020-08-28 11:39
+     */
+    boolean setUserRole(@Param("uid")Long uid,@Param("rid")Long rid);
 
 }

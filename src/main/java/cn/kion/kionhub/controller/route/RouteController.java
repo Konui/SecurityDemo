@@ -25,7 +25,11 @@ public class RouteController {
      * @Date    2020-08-23 11:23
      */
     @RequestMapping("/")
-    public JsonResult<String> test(){
+    public JsonResult<String> index(){
+        return ResultTool.success();
+    }
+    @RequestMapping("/test")
+    public JsonResult test(){
         return ResultTool.success();
     }
 }

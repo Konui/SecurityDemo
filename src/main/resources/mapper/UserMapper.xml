@@ -42,7 +42,7 @@
     </select>
 
     <insert id="register">
-        INSERT INTO sys_user (name,username,password,head_img,create_time)values(#{name},#{username},#{password},'default',now());
+        INSERT INTO sys_user (name,username,password,head_img,create_time)VALUES(#{name},#{username},#{password},'default',now());
     </insert>
 
     <update id="resetPwd">
@@ -56,5 +56,12 @@
     </update>
     <update id="setMail">
         UPDATE sys_user SET mail = #{mail} WHERE id = #{id};
+    </update>
+
+    <insert id="registerUserRole">
+        INSERT INTO sys_user_role_relation(user_id,role_id)VALUES((SELECT id FROM `sys_user` WHERE name = #{name}),2);
+    </insert>
+    <update id="setUserRole">
+        UPDATE sys_user_role_relation SET role_id=#{rid} WHERE user_id=#{uid};
     </update>
 </mapper>

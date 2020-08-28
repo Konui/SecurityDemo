@@ -1,5 +1,6 @@
 package cn.kion.kionhub.service;
 
+import cn.kion.kionhub.entity.RolePermissionVO;
 import cn.kion.kionhub.entity.User;
 
 import java.util.List;
@@ -10,4 +11,5 @@ import java.util.List;
  */
 public interface AdminService {
     List<User> getAllUser();
+    List<RolePermissionVO> getAllRolesPermission();
 }

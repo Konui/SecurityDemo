@@ -1,6 +1,8 @@
 package cn.kion.kionhub.service.impl;
 
+import cn.kion.kionhub.entity.RolePermissionVO;
 import cn.kion.kionhub.entity.User;
+import cn.kion.kionhub.mapper.RoleMapper;
 import cn.kion.kionhub.mapper.UserMapper;
 import cn.kion.kionhub.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,15 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     @Autowired
     UserMapper userMapper;
-
+    @Autowired
+    RoleMapper roleMapper;
     @Override
     public List<User> getAllUser() {
         return userMapper.getAllUser();
+    }
+
+    @Override
+    public List<RolePermissionVO> getAllRolesPermission() {
+        return roleMapper.getAllRolesPermission();
     }
 }

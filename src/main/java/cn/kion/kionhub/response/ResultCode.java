@@ -26,7 +26,7 @@ public enum ResultCode {
     USER_ACCOUNT_LOCKED(2005, "账号被锁定"),
     USER_ACCOUNT_NOT_EXIST(2006, "账号不存在"),
     USER_ACCOUNT_USE_BY_OTHERS(2007, "账号下线"),
-
+    USER_NAME_OR_USERNAME_EXIST(2008,"用户名或昵称已存在"),
     //业务错误
     NO_PERMISSION(3001, "没有权限"),
     NO_MAPPING_URL(3002,"请求地址错误");

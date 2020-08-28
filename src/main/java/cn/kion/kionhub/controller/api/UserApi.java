@@ -8,6 +8,7 @@ import cn.kion.kionhub.response.ResultTool;
 import cn.kion.kionhub.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class UserApi {
     @Autowired
     UserService userService;
     /**
-     * 注册用户
+     * 注册用户 ###前段校验用户名以及昵称是否重复
      *
      * @Param   user
      * @Return  cn.kion.kionhub.response.JsonResult
@@ -40,28 +41,23 @@ public class UserApi {
         if(ObjectUtils.isEmpty(user)){
             throw new ResultException(ResultCode.PARAM_NOT_VALID);
         }
-        boolean flag=userService.register(user);
-        if(!flag){
-            return ResultTool.fail();
-        }
+        userService.register(user);
         return ResultTool.success();
     }
-//    @GetMapping("/login")
-//    public JsonResult login(User user){
-//        if(ObjectUtils.isEmpty(user)){
-//            throw new ResultException(ResultCode.PARAM_NOT_VALID);
-//        }
-//        boolean flag=userService.login(user);
-//        if(!flag){
-//            return ResultTool.fail();
-//        }
-//        return ResultTool.success();
-//    }
-//    @GetMapping("/logout")
-//    public JsonResult logout(){
-//        return ResultTool.success();
-//    }
-
-
-
+    /**
+     * 修改昵称
+     *
+     * @Param   user    需要上传id和更改后的username，前段校验存在
+     * @Return  cn.kion.kionhub.response.JsonResult
+     *
+     * @Date    2020-08-28 16:28
+     */
+    @PutMapping("/username")
+    public JsonResult changeUserName(User user){
+        if(ObjectUtils.isEmpty(user)){
+            throw new ResultException(ResultCode.PARAM_NOT_VALID);
+        }
+        userService.setUserName(user.getId(),user.getUserName());
+        return ResultTool.success();
+    }
 }

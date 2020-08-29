@@ -1,5 +1,6 @@
 package cn.kion.kionhub.service.impl;
 
+import cn.kion.kionhub.entity.PathPermissionDO;
 import cn.kion.kionhub.entity.Permission;
 import cn.kion.kionhub.exception.ResultException;
 import cn.kion.kionhub.mapper.PermissionMapper;
@@ -35,5 +36,10 @@ public class PermissionImpl implements PermissionService {
             throw new ResultException(ResultCode.PARAM_NOT_BLANK);
         }
         return permissionMapper.selectListByPath(url);
+    }
+
+    @Override
+    public List<PathPermissionDO> selectAll() {
+        return permissionMapper.selectAll();
     }
 }

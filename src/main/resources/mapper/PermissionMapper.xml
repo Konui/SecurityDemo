@@ -9,11 +9,26 @@
         <result property="permissionCode" column="permission_code"/>
         <result property="permissionName" column="permission_name"/>
     </resultMap>
+    <resultMap id="PathPermission" type="cn.kion.kionhub.entity.PathPermissionDO">
+        <id property="id" column="id"/>
+        <result property="url" column="url"/>
+        <collection property="permissionList" ofType="cn.kion.kionhub.entity.Permission">
+            <id property="id" column="pid"/>
+            <result property="permissionCode" column="permission_code"/>
+            <result property="permissionName" column="permission_name"/>
+        </collection>
+    </resultMap>
     <select id="selectListByPath" resultMap="Permission">
         SELECT p.* FROM sys_permission p
                     LEFT JOIN sys_request_path_permission_relation rp ON p.id = rp.permission_id
 					LEFT JOIN sys_request_path r ON rp.url_id = r.id
 					WHERE r.url = #{url};
+    </select>
+
+    <select id="selectAll" resultMap="PathPermission">
+        SELECT r.id ,r.url,p.id as pid , p.permission_code,p.permission_name FROM sys_permission p
+            LEFT JOIN sys_request_path_permission_relation rp ON p.id = rp.permission_id
+			LEFT JOIN sys_request_path r ON rp.url_id = r.id
     </select>
 
     <select id="selectListByUser" resultMap="Permission">

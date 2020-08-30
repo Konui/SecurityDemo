@@ -16,4 +16,8 @@ public interface PermissionMapper {
     List<Permission> selectListByUser(@Param("name")String name);
     List<Permission> selectListByPath(@Param("url")String url);
     List<PathPermissionDO> selectAll();
+    //新增权限
+    //删除权限
+    //新增地址
+    //删除地址
 }

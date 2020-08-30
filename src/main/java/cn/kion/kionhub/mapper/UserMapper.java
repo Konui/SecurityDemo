@@ -144,15 +144,8 @@ public interface UserMapper {
      * @Date    2020-08-28 11:45
      */
     boolean registerUserRole(@Param("name")String name);
-    /**
-     * 设置用户的角色
-     *
-     * @Param   uid
-     * @Param   rid
-     * @Return  boolean
-     *
-     * @Date    2020-08-28 11:39
-     */
-    boolean setUserRole(@Param("uid")Long uid,@Param("rid")Long rid);
+
+
+
 
 }

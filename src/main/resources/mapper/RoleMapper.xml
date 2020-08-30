@@ -36,4 +36,21 @@
                 sys_permission p ON rp.permission_id=p.id;
 
     </select>
+
+    <update id="setUserRole">
+        UPDATE sys_user_role_relation SET role_id=#{rid} WHERE user_id=#{uid};
+    </update>
+
+    <insert id="createRole">
+        INSERT INTO sys_role (role_name,role_description)VALUES(#{roleName},#{roleDescription});
+    </insert>
+    <delete id="delRole">
+        DELETE FROM sys_role WHERE id = #{id};
+    </delete>
+    <insert id="setRolePermission">
+        INSET INTO sys_role_permission_relation(role_id,permission_id)VALUES(#{rid},#{pid});
+    </insert>
+    <delete id="delRolePermission">
+        DELETE FROM sys_role_permission_relation WHERE role_id=#{rid} AND permission_id=#{pid};
+    </delete>
 </mapper>

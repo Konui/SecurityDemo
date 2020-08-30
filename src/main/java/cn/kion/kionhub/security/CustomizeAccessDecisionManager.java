@@ -22,6 +22,7 @@ public class CustomizeAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
         Iterator<ConfigAttribute> iterator = collection.iterator();
+
         while (iterator.hasNext()) {
             ConfigAttribute ca = iterator.next();
             //当前请求需要的权限

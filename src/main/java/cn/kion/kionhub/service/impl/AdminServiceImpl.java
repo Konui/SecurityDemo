@@ -3,6 +3,7 @@ package cn.kion.kionhub.service.impl;
 import cn.kion.kionhub.entity.RolePermissionVO;
 import cn.kion.kionhub.entity.User;
 import cn.kion.kionhub.exception.ResultException;
+import cn.kion.kionhub.mapper.PermissionMapper;
 import cn.kion.kionhub.mapper.RoleMapper;
 import cn.kion.kionhub.mapper.UserMapper;
 import cn.kion.kionhub.response.ResultCode;
@@ -23,6 +24,8 @@ public class AdminServiceImpl implements AdminService {
     UserMapper userMapper;
     @Autowired
     RoleMapper roleMapper;
+    @Autowired
+    PermissionMapper permissionMapper;
     @Override
     public List<User> getAllUser() {
         return userMapper.getAllUser();
@@ -59,6 +62,36 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Boolean delRolePermission(Long rid, Long pid) {
         return roleMapper.delRolePermission(rid,pid);
+    }
+
+    @Override
+    public Boolean createPermission(String pCode, String pName) {
+        return permissionMapper.createPermission(pCode,pName);
+    }
+
+    @Override
+    public Boolean delPermission(Long id) {
+        return permissionMapper.delPermission(id);
+    }
+
+    @Override
+    public Boolean createPath(String url, String description) {
+        return permissionMapper.createPath(url,description);
+    }
+
+    @Override
+    public Boolean delPath(Long id) {
+        return permissionMapper.delPath(id);
+    }
+
+    @Override
+    public Boolean setPathPermission(Long uid, Long pid) {
+        return permissionMapper.setPathPermission(uid,pid);
+    }
+
+    @Override
+    public Boolean delPathPermission(Long uid, Long pid) {
+        return permissionMapper.delPathPermission(uid,pid);
     }
 
 }

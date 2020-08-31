@@ -77,4 +77,62 @@ public interface AdminService {
      * @Date    2020-08-30 21:13
      */
     Boolean delRolePermission(Long rid,Long pid);
+    /**
+     * 新增权限
+     *
+     * @Param   pCode
+     * @Param   pName
+     * @Return  java.lang.Boolean
+     *
+     * @Date    2020-08-31 16:55
+     */
+    Boolean createPermission(String pCode,String pName);
+    /**
+     * 删除权限
+     *
+     * @Param   id
+     * @Return  java.lang.Boolean
+     *
+     * @Date    2020-08-31 16:56
+     */
+    Boolean delPermission(Long id);
+    /**
+     * 新增路径
+     *
+     * @Param   url
+     * @Param   description
+     * @Return  java.lang.Boolean
+     *
+     * @Date    2020-08-31 16:56
+     */
+    Boolean createPath(String url,String description);
+    /**
+     * 删除路径
+     *
+     * @Param   id
+     * @Return  java.lang.Boolean
+     *
+     * @Date    2020-08-31 16:56
+     */
+    Boolean delPath(Long id);
+    /**
+     * 新增路径所需权限
+     *
+     * @Param   uid
+     * @Param   pid
+     * @Return  java.lang.Boolean
+     *
+     * @Date    2020-08-31 16:56
+     */
+    Boolean setPathPermission(Long uid,Long pid);
+    /**
+     * 删除路径所需权限
+     *
+     * @Param   uid
+     * @Param   pid
+     * @Return  java.lang.Boolean
+     *
+     * @Date    2020-08-31 16:56
+     */
+    Boolean delPathPermission(Long uid,Long pid);
 }

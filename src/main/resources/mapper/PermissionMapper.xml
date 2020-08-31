@@ -40,4 +40,28 @@
 					sys_user u ON u.id=ur.user_id
 					WHERE u.`name`=#{name}
     </select>
+
+    <insert id="createPermission">
+        INSERT INTO sys_permission(permission_code,permission_name)VALUES(#{permissionCode},#{permissionName});
+    </insert>
+
+    <delete id="delPermission">
+        DELETE FROM sys_permission WHERE id = #{id};
+    </delete>
+
+    <insert id="createPath">
+        INSERT INTO sys_request_path(url,description)VALUES(#{url},#{description});
+    </insert>
+
+    <delete id="delPath">
+        DELETE FROM sys_request_path WHERE id = #{id};
+    </delete>
+
+    <insert id="setPathPermission">
+        INSERT INTO sys_request_path_permission_relation(url_id,permission_id)VALUES(#{uid},#{pid});
+    </insert>
+
+    <delete id="delPathPermission">
+        DELETE FROM sys_request_path_permission_relation WHERE url_id = uid AND permission_id = #{pid};
+    </delete>
 </mapper>

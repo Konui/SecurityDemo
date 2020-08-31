@@ -26,15 +26,10 @@
 
 
     <select id="getAllRolesPermission" resultMap="RolePermission">
--- 			SELECT ANY_VALUE( count(1)) total ,r.id as id ,ANY_VALUE(r.role_name) as role_name,ANY_VALUE(r.role_description) as role_description,
---                 ANY_VALUE(p.id) as pid,ANY_VALUE(p.permission_code) as permission_code ,ANY_VALUE(p.permission_name) as permission_name FROM sys_role r LEFT JOIN
---                 sys_role_permission_relation rp ON r.id=rp.role_id LEFT JOIN
---                 sys_permission p ON rp.permission_id=p.id GROUP BY id;
     		SELECT r.id as id ,r.role_name as role_name,r.role_description as role_description,
                 p.id as pid,p.permission_code as permission_code ,p.permission_name as permission_name FROM sys_role r LEFT JOIN
                 sys_role_permission_relation rp ON r.id=rp.role_id LEFT JOIN
                 sys_permission p ON rp.permission_id=p.id;
-
     </select>
 
     <update id="setUserRole">

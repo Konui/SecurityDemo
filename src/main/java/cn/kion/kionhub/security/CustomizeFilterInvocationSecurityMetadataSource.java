@@ -3,6 +3,8 @@ package cn.kion.kionhub.security;
 import cn.kion.kionhub.entity.PathPermissionDO;
 import cn.kion.kionhub.entity.Permission;
 import cn.kion.kionhub.service.PermissionService;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -27,8 +29,11 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
     AntPathMatcher antPathMatcher = new AntPathMatcher();
     @Autowired
     PermissionService permissionService;
+    public static Cache<String , Object> cache = CacheBuilder.newBuilder().weakValues().recordStats().build();
 
-
+    {
+        cache.put("isExpired",true);
+    }
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         //获取请求地址
@@ -36,7 +41,13 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
         //查询具体某个接口的权限
         //List<Permission> permissionList =  permissionService.selectListByPath(requestUrl);
         //获取全部地址的权限
-        List<PathPermissionDO> pathPermissionDOList =  permissionService.selectAll();
+        //判断缓存是否失效，失效重新读取
+        if((boolean)cache.getIfPresent("isExpired")){
+            List<PathPermissionDO> pathPermissionDOList =  permissionService.selectAll();
+            cache.put("pathPermissionDOList",pathPermissionDOList);
+            cache.put("isExpired",false);
+        }
+        List<PathPermissionDO> pathPermissionDOList = (List<PathPermissionDO>)cache.getIfPresent("pathPermissionDOList");
 //        if(permissionList == null || permissionList.size() == 0){
 //            //###应该拒绝访问
 //            //请求路径没有配置权限，表明该请求接口可以任意访问

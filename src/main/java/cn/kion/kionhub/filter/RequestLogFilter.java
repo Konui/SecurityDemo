@@ -1,5 +1,6 @@
 package cn.kion.kionhub.filter;
 
+import cn.kion.kionhub.security.CustomizeFilterInvocationSecurityMetadataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -49,6 +50,8 @@ public class RequestLogFilter implements Filter {
         rsp.append(s.getStatus());
         rsp.append("\tspend_time:");
         rsp.append(System.currentTimeMillis()-start);
+        rsp.append("\tpathPermissionDOList:");
+        rsp.append(CustomizeFilterInvocationSecurityMetadataSource.cache.stats());
         //出参
         log.info("Response params:{{}}",rsp);
     }

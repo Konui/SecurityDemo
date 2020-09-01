@@ -2,6 +2,7 @@ package cn.kion.kionhub.config;
 
 import cn.kion.kionhub.filter.RequestLogFilter;
 import cn.kion.kionhub.security.*;
+import com.google.common.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.Filter;
 
 /**
  * @Author Kion
@@ -56,8 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomizeFilterInvocationSecurityMetadataSource securityMetadataSource;
 
-    @Autowired
-    CustomizeAbstractSecurityInterceptor securityInterceptor;
+    //@Autowired
+    //CustomizeAbstractSecurityInterceptor securityInterceptor;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -105,8 +109,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         and().sessionManagement().
                 maximumSessions(1).//同一账号同时登录最大用户数
                 expiredSessionStrategy(sessionInformationExpiredStrategy);//会话失效(账号被挤下线)处理逻辑
-        http.addFilterBefore(new RequestLogFilter(),FilterSecurityInterceptor.class);
-        http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class);
-
+        http.addFilterBefore(new RequestLogFilter(), WebAsyncManagerIntegrationFilter.class);
     }
 }

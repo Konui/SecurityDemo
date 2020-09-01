@@ -1,10 +1,13 @@
 package cn.kion.kionhub.filter;
 
 import cn.kion.kionhub.security.CustomizeFilterInvocationSecurityMetadataSource;
+import com.google.common.cache.Cache;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +54,7 @@ public class RequestLogFilter implements Filter {
         rsp.append("\tspend_time:");
         rsp.append(System.currentTimeMillis()-start);
         rsp.append("\tpathPermissionDOList:");
-        rsp.append(CustomizeFilterInvocationSecurityMetadataSource.cache.stats());
+        rsp.append(CustomizeFilterInvocationSecurityMetadataSource.n);
         //出参
         log.info("Response params:{{}}",rsp);
     }

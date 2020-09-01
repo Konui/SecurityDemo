@@ -5,6 +5,7 @@ import cn.kion.kionhub.entity.Permission;
 import cn.kion.kionhub.service.PermissionService;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -13,9 +14,11 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 路径权限认证
@@ -25,13 +28,14 @@ import java.util.List;
 @Component
 public class CustomizeFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-
     AntPathMatcher antPathMatcher = new AntPathMatcher();
     @Autowired
     PermissionService permissionService;
-    public static Cache<String , Object> cache = CacheBuilder.newBuilder().weakValues().recordStats().build();
 
-    {
+    public static ConcurrentHashMap<String,Object> cache;
+
+    static {
+        cache=new ConcurrentHashMap<>();
         cache.put("isExpired",true);
     }
     @Override
@@ -42,12 +46,12 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
         //List<Permission> permissionList =  permissionService.selectListByPath(requestUrl);
         //获取全部地址的权限
         //判断缓存是否失效，失效重新读取
-        if((boolean)cache.getIfPresent("isExpired")){
+        if((boolean)cache.get("isExpired")){
             List<PathPermissionDO> pathPermissionDOList =  permissionService.selectAll();
             cache.put("pathPermissionDOList",pathPermissionDOList);
             cache.put("isExpired",false);
         }
-        List<PathPermissionDO> pathPermissionDOList = (List<PathPermissionDO>)cache.getIfPresent("pathPermissionDOList");
+        List<PathPermissionDO> pathPermissionDOList = (List<PathPermissionDO>)cache.get("pathPermissionDOList");
 //        if(permissionList == null || permissionList.size() == 0){
 //            //###应该拒绝访问
 //            //请求路径没有配置权限，表明该请求接口可以任意访问

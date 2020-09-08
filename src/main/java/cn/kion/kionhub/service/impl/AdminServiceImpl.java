@@ -3,12 +3,14 @@ package cn.kion.kionhub.service.impl;
 import cn.kion.kionhub.entity.RolePermissionVO;
 import cn.kion.kionhub.entity.User;
 import cn.kion.kionhub.exception.ResultException;
+import cn.kion.kionhub.mapper.LogsMapper;
 import cn.kion.kionhub.mapper.PermissionMapper;
 import cn.kion.kionhub.mapper.RoleMapper;
 import cn.kion.kionhub.mapper.UserMapper;
 import cn.kion.kionhub.response.ResultCode;
 import cn.kion.kionhub.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,6 +28,8 @@ public class AdminServiceImpl implements AdminService {
     RoleMapper roleMapper;
     @Autowired
     PermissionMapper permissionMapper;
+    @Autowired
+    LogsMapper logsMapper;
     @Override
     public List<User> getAllUser() {
         return userMapper.getAllUser();
@@ -92,6 +96,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Boolean delPathPermission(Long uid, Long pid) {
         return permissionMapper.delPathPermission(uid,pid);
+    }
+
+    @Async("asyncTask")
+    @Override
+    public void insertLogs(String username, String requestUrl, String params, String operationDescription) {
+        logsMapper.insertLog(username,requestUrl,params,operationDescription);
     }
 
 }

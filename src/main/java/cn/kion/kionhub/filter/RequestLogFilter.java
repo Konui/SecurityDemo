@@ -1,15 +1,10 @@
 package cn.kion.kionhub.filter;
 
-import cn.kion.kionhub.security.CustomizeFilterInvocationSecurityMetadataSource;
-import com.google.common.cache.Cache;
+import cn.kion.kionhub.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,6 +17,7 @@ import java.io.IOException;
  */
 @Slf4j
 public class RequestLogFilter implements Filter {
+    AdminService adminService;
     /**
      * 记录所有请求的相关信息
      *
@@ -53,9 +49,20 @@ public class RequestLogFilter implements Filter {
         rsp.append(s.getStatus());
         rsp.append("\tspend_time:");
         rsp.append(System.currentTimeMillis()-start);
-        rsp.append("\tpathPermissionDOList:");
-        rsp.append(CustomizeFilterInvocationSecurityMetadataSource.n);
+        //rsp.append("\tpathPermissionDOList:");
+        //rsp.append(CustomizeFilterInvocationSecurityMetadataSource.cache);
+        //异步记录日志到mysql
+        req.insert(0,"Request params:{");
+        req.append("}");
+        req.append("Response params:{");
+        req.append(rsp);
+        req.append("}");
+        adminService.insertLogs("default",r.getRequestURL().toString(),req.toString(),"default");
         //出参
         log.info("Response params:{{}}",rsp);
+
+    }
+    public void setAdminService(AdminService adminService){
+        this.adminService=adminService;
     }
 }

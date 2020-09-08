@@ -135,4 +135,14 @@ public interface AdminService {
      * @Date    2020-08-31 16:56
      */
     Boolean delPathPermission(Long uid,Long pid);
+    /**
+     * 新增日志
+     *
+     * @param username
+     * @param requestUrl
+     * @param params
+     * @param operationDescription
+     * @return
+     */
+    void insertLogs(String username,String requestUrl,String params,String operationDescription);
 }

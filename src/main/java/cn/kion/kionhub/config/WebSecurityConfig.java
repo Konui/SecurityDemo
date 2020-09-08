@@ -2,6 +2,7 @@ package cn.kion.kionhub.config;
 
 import cn.kion.kionhub.filter.RequestLogFilter;
 import cn.kion.kionhub.security.*;
+import cn.kion.kionhub.service.AdminService;
 import com.google.common.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 
 /**
@@ -62,7 +64,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //@Autowired
     //CustomizeAbstractSecurityInterceptor securityInterceptor;
-
+    @Autowired
+    AdminService adminService;
+    static RequestLogFilter requestLogFilter;
+    /**
+     * 因为RequesLogFilter没有被spring容器管理，所以不能注入serveice，需要手动注入。
+     * 如果将RequestLogFilter托给spring管理会导致容器中有两个该bean，同一次请求会进入两次过滤器
+     *
+     * @Return  void
+     *
+     * @Date    2020-09-08 18:03
+     */
+    @PostConstruct
+    private void setAdminService() {
+        requestLogFilter=new RequestLogFilter();
+        requestLogFilter.setAdminService(this.adminService);
+    }
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -109,6 +126,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         and().sessionManagement().
                 maximumSessions(1).//同一账号同时登录最大用户数
                 expiredSessionStrategy(sessionInformationExpiredStrategy);//会话失效(账号被挤下线)处理逻辑
-        http.addFilterBefore(new RequestLogFilter(), WebAsyncManagerIntegrationFilter.class);
+        http.addFilterBefore(requestLogFilter, WebAsyncManagerIntegrationFilter.class);
     }
 }

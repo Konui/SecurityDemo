@@ -1,11 +1,7 @@
 package cn.kion.kionhub.security;
 
 import cn.kion.kionhub.entity.PathPermissionDO;
-import cn.kion.kionhub.entity.Permission;
 import cn.kion.kionhub.service.PermissionService;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -14,9 +10,7 @@ import org.springframework.security.web.access.intercept.FilterInvocationSecurit
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
-import javax.annotation.Resource;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -60,7 +54,6 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
 //        String[] attributes = new String[permissionList.size()];
 //        for(int i = 0;i<permissionList.size();i++){
 //            attributes[i] = permissionList.get(i).getPermissionCode();
-//        }
 
         for(PathPermissionDO pathPermissionDO:pathPermissionDOList){
             if(antPathMatcher.match(pathPermissionDO.getUrl(),requestUrl)){

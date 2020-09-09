@@ -30,37 +30,10 @@ public class RequestLogFilter implements Filter {
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        Long start=System.currentTimeMillis();
-        StringBuilder req = new StringBuilder("");
-        HttpServletRequest r = (HttpServletRequest) servletRequest;
-        req.append("user_ip:");
-        req.append(r.getRemoteAddr());
-        req.append(",\treq_uri:");
-        req.append(r.getRequestURI());
-        req.append(",\treq_method:");
-        req.append(r.getMethod());
-        //入参
-        log.info("Request params:{{}}",req);
-
+        Long start = System.currentTimeMillis();
         filterChain.doFilter(servletRequest,servletResponse);
-        HttpServletResponse s = (HttpServletResponse) servletResponse;
-        StringBuilder rsp = new StringBuilder("");
-        rsp.append("rsp_code:");
-        rsp.append(s.getStatus());
-        rsp.append("\tspend_time:");
-        rsp.append(System.currentTimeMillis()-start);
-        //rsp.append("\tpathPermissionDOList:");
-        //rsp.append(CustomizeFilterInvocationSecurityMetadataSource.cache);
-        //异步记录日志到mysql
-        req.insert(0,"Request params:{");
-        req.append("}");
-        req.append("Response params:{");
-        req.append(rsp);
-        req.append("}");
-        adminService.insertLogs("default",r.getRequestURL().toString(),req.toString(),"default");
-        //出参
-        log.info("Response params:{{}}",rsp);
-
+        Long current = System.currentTimeMillis();
+        adminService.insertLogs(servletRequest,servletResponse,start,current);
     }
     public void setAdminService(AdminService adminService){
         this.adminService=adminService;

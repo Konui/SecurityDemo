@@ -1,0 +1,32 @@
+#邮件相关配置
+spring:
+  profiles:
+    include: config
+  mail:
+    host: smtp.office365.com
+    port: 587
+    username: ${mail}
+    password: ${mailPw}
+    protocol: smtp
+    test-connection: true
+    default-encoding: UTF-8
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: false
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${mysqlURL}
+    username: ${mysqlUserName}
+    password: ${mysqlPw}
+
+mybatis:
+  configuration:
+    # 下划线转驼峰
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: cn.kionhub.entity
+
+#spring.mail.properties.mail.display.sendmail=spring-boot-demo
+#jasypt.encryptor.password=spring-boot-demo

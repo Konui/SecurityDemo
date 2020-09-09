@@ -1,8 +1,11 @@
 package cn.kion.kionhub.service;
 
+import cn.kion.kionhub.entity.Logs;
 import cn.kion.kionhub.entity.RolePermissionVO;
 import cn.kion.kionhub.entity.User;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import java.util.List;
 
 /**
@@ -138,11 +141,19 @@ public interface AdminService {
     /**
      * 新增日志
      *
-     * @param username
-     * @param requestUrl
-     * @param params
-     * @param operationDescription
+     * @param servletRequest
+     * @param servletResponse
+     * @param start
+     * @param current
      * @return
      */
-    void insertLogs(String username,String requestUrl,String params,String operationDescription);
+    void insertLogs(ServletRequest servletRequest, ServletResponse servletResponse, Long start, Long current);
+    /**
+     * 查询全部日志
+     *
+     * @Return  java.util.List<cn.kion.kionhub.entity.Logs>
+     *
+     * @Date    2020-09-09 09:21
+     */
+    List<Logs> selectAll();
 }

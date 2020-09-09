@@ -1,5 +1,6 @@
 package cn.kion.kionhub.service.impl;
 
+import cn.kion.kionhub.entity.Logs;
 import cn.kion.kionhub.entity.RolePermissionVO;
 import cn.kion.kionhub.entity.User;
 import cn.kion.kionhub.exception.ResultException;
@@ -9,17 +10,23 @@ import cn.kion.kionhub.mapper.RoleMapper;
 import cn.kion.kionhub.mapper.UserMapper;
 import cn.kion.kionhub.response.ResultCode;
 import cn.kion.kionhub.service.AdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
  * @Author Kion
  * @Date 2020-08-24 17:05
  */
+@Slf4j
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
@@ -100,8 +107,43 @@ public class AdminServiceImpl implements AdminService {
 
     @Async("asyncTask")
     @Override
-    public void insertLogs(String username, String requestUrl, String params, String operationDescription) {
-        logsMapper.insertLog(username,requestUrl,params,operationDescription);
+    public void insertLogs(ServletRequest servletRequest, ServletResponse servletResponse, Long start, Long current) {
+        /************************************/
+        //如果请求先响应完成，servlet相关参数被销毁 -----> BUG
+        /************************************/
+        StringBuilder req = new StringBuilder("");
+        HttpServletRequest r = (HttpServletRequest) servletRequest;
+        req.append("user_ip:");
+        req.append(r.getRemoteAddr());
+        req.append(",\treq_uri:");
+        req.append(r.getRequestURI());
+        req.append(",\treq_method:");
+        req.append(r.getMethod());
+        //入参
+        log.info("Request params:{{}}",req);
+
+        HttpServletResponse s = (HttpServletResponse) servletResponse;
+        StringBuilder rsp = new StringBuilder("");
+        rsp.append("rsp_code:");
+        rsp.append(s.getStatus());
+        rsp.append("\tspend_time:");
+        rsp.append(System.currentTimeMillis()-start);
+        //rsp.append("\tpathPermissionDOList:");
+        //rsp.append(CustomizeFilterInvocationSecurityMetadataSource.cache);
+        //异步记录日志到mysql
+        req.insert(0,"Request params:{");
+        req.append("}");
+        req.append("Response params:{");
+        req.append(rsp);
+        req.append("}");
+        logsMapper.insertLog("default",r.getRequestURI().toString(),req.toString(),"default");
+        //出参
+        log.info("Response params:{{}}",rsp);
+    }
+
+    @Override
+    public List<Logs> selectAll() {
+        return logsMapper.selectAll();
     }
 
 }
